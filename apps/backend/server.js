@@ -3,17 +3,24 @@ const cors = require('cors');
 const { Sequelize } = require('sequelize'); // Importer Sequelize
 const sequelize = require('./../backend/config'); // Importer l'objet Sequelize initialisé
 
+const authentificationRoute = require("./routes/authentificationRoute");
+
 const HOST = 'localhost' || process.env.HOST;
 const PORT = 3000 || process.env.PORT;
 
 const app = express();
 
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+    origin: 'http://localhost:3000', 
+    methods: ['GET', 'POST'], 
+    allowedHeaders: ['Content-Type', 'Authorization'], 
+    credentials: true, 
+}));
 
-app.get('/', (req, res) => {
-    res.send('Hello World!');
-});
+
+app.use("/", authentificationRoute);
+
 
 // Utiliser sequelize.authenticate() pour tester la connexion à la base de données
 sequelize.authenticate()

@@ -1,13 +1,12 @@
 <script>
 import Modal from '../components/modal.vue'
-
+import axios from 'axios';
 
 export default {
-  name: 'App',
+  name: 'UserLogin',
   components: {
     Modal,
   },
-  name: 'UserLogin',
   data() {
     return {
       credentials: {
@@ -20,12 +19,12 @@ export default {
   methods: {
     async handleLogin() {
       try {
-        const response = await axios.post(`http://localhost:3002/login`, this.credentials);
+        const response = await axios.post(`http://localhost:3000/register`, this.credentials);
         const token = response.data.token;
         console.log(response);
         localStorage.setItem('userToken', token);
         this.loginError = false;
-        this.$router.push('');
+        this.$router.push('/Home');
       } catch (error) {
         this.loginError = true;
         console.log(error);
