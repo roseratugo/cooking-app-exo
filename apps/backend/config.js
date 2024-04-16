@@ -1,8 +1,10 @@
 const { Sequelize } = require('sequelize');
 
+
 const sequelize = new Sequelize('projetcooking', 'root', '', {
   host: 'localhost', 
-  dialect: 'mysql' 
+  dialect: 'mysql' ,
+  logging: console.log
 });
 
 // Teste la connexion à la base de données

@@ -23,7 +23,7 @@ app.use(cors({
 app.use("/", authentificationRoute, loginRoute);
 
 
-sequelize.sync({ alter: true }).then(() => {
+sequelize.sync().then(() => {
     app.listen(PORT, HOST, () => {
         console.log(`Server is running on http://${HOST}:${PORT}`);
     });
