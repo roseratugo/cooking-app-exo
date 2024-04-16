@@ -1,8 +1,10 @@
-const { Sequelize } = require('sequelize');
+const Sequelize = require('sequelize');
 
-const sequelize = new Sequelize('projetcooking', 'root', '', {
-  host: 'localhost', 
-  dialect: 'mysql' 
+const sequelize = new Sequelize('cooking', 'root', 'root', {
+  host: 'localhost',
+  port: 8889,
+  dialect: 'mysql',
+  logging: console.log
 });
 
 // Teste la connexion à la base de données

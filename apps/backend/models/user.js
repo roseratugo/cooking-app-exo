@@ -23,14 +23,6 @@ User.init({
         allowNull: false,
         unique: true
     },
-    is_moderator: {
-        type: DataTypes.BOOLEAN,
-        defaultValue: false
-    },
-    is_verified: {
-        type: DataTypes.BOOLEAN,
-        defaultValue: false
-    }
 }, {
     sequelize,
     modelName: 'user',
