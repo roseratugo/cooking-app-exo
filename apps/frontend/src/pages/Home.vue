@@ -77,7 +77,7 @@ export default {
     </div>
 </a>
 
-    
+
 
 <form class="max-w-sm mx-auto mt-20 mb-20  border-2 border-indigo-600" @submit.prevent="handleLogin">
         <div v-if="loginError" class="p-3 text-sm text-red-700 bg-red-100 rounded-lg" role="alert">
@@ -95,9 +95,9 @@ export default {
   </div>
   <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 mt-5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Connexion</button>
 </form>
- 
 
-   
+
+
 
 <footer class="bg-white rounded-lg shadow m-4 dark:bg-gray-800">
     <div class="w-full mx-auto max-w-screen-xl p-4 md:flex md:items-center md:justify-between">
@@ -121,7 +121,7 @@ export default {
 </footer>
 </div>
 
-   
+
 
 </template>
 
@@ -144,7 +144,7 @@ export default {
 
 
 <!-- ******code Ugo -->
-<!-- 
+<!--
 
 <template>
   <div class="flex items-center justify-center min-h-screen bg-gradient-to-br from-orange-500 to-amber-600">
