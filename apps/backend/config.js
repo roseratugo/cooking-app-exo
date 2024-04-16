@@ -6,6 +6,12 @@ const sequelize = new Sequelize('projetcooking', 'root', '', {
 });
 
 // Teste la connexion à la base de données
-sequelize.sync()
+sequelize.authenticate()
+  .then(() => {
+    console.log('Connexion à la base de données établie avec succès.');
+  })
+  .catch(err => {
+    console.error('Impossible de se connecter à la base de données:', err);
+  });
 
 module.exports = sequelize;

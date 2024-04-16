@@ -1,18 +1,31 @@
 const { DataTypes } = require('sequelize');
-const config= require('../../config');
+const config= require('../config');
 
 
-class Recipe {
-    constructor(id, title, description, preparation_time, cooking_time, user_id, category) {
-      this.id = id;
-      this.title = title;
-      this.description = description;
-      this.preparation_time = preparation_time;
-      this.cooking_time = cooking_time;
-      this.user_id = user_id;
-      this.category = category;
+const Recipe = sequelize.define('Recipe', {
+    id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true
+    },
+    title: {
+      type: DataTypes.STRING
+    },
+    description: {
+      type: DataTypes.TEXT
+    },
+    preparation_time: {
+      type: DataTypes.INTEGER
+    },
+    cooking_time: {
+      type: DataTypes.TIME
+    },
+    user_id: {
+      type: DataTypes.INTEGER
+    },
+    category: {
+      type: DataTypes.STRING
     }
-  }
+  });
   
   module.exports = Recipe;
-  

@@ -1,18 +1,41 @@
-const { DataTypes } = require('sequelize');
-const config = require('../../config');
-const bcrypt = require('bcrypt');
+const { Model, DataTypes } = require('sequelize');
+const sequelize = require('../config');
 
+class User extends Model { }
 
-class User {
-    constructor(id, username, password, email, is_moderator, is_verified) {
-      this.id = id;
-      this.username = username;
-      this.password = password;
-      this.email = email;
-      this.is_moderator = is_moderator;
-      this.is_verified = is_verified;
+User.init({
+    id: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true
+    },
+    username: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: true
+    },
+    password: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    email: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: true
+    },
+    is_moderator: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false
+    },
+    is_verified: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false
     }
-  }
-  
-  module.exports = User;
-  
+}, {
+    sequelize,
+    modelName: 'user',
+});
+
+module.exports = User;
+
+

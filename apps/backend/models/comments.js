@@ -1,16 +1,21 @@
 const { DataTypes } = require('sequelize');
-const config = require('../../config');
+const config = require('../config');
 
-// models/Comment.js
-class Comment {
-    constructor(id, recipe_id, user_id, text, created_at) {
-      this.id = id;
-      this.recipe_id = recipe_id;
-      this.user_id = user_id;
-      this.text = text;
-      this.created_at = created_at;
+
+const Comment = sequelize.define('Comment', {
+    id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true
+    },
+    text: {
+      type: DataTypes.STRING
+    },
+    created_at: {
+      type: DataTypes.DATE,
+      defaultValue: DataTypes.NOW
     }
-  }
+  });
   
   
   
