@@ -5,6 +5,7 @@ const sequelize = require('./config'); // Importer l'objet Sequelize initialisé
 
 const authentificationRoute = require("./routes/authentificationRoute");
 const loginRoute = require("./routes/loginRoute");
+const updateUserRoute = require("./routes/updateUserRoute");
 
 const HOST = 'localhost' || process.env.HOST;
 const PORT = 3000 || process.env.PORT;
@@ -20,7 +21,7 @@ app.use(cors({
 }));
 
 
-app.use("/", authentificationRoute, loginRoute);
+app.use("/", authentificationRoute, loginRoute, updateUserRoute );
 
 
 sequelize.sync().then(() => {
