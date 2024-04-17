@@ -8,9 +8,9 @@ router.put('/user/:userId', verifyToken, async (req, res) => {
     try {
         const { username, email } = req.body;
         const userId = req.user.id;
-        const userids = req.params.userId;
+        const userids = parseInt(req.params.userId);
         console.log(userId);
-        if (userId !== userids) {
+        if (userId !== parseInt(userids)) {
             return res.status(403).json({ error: 'Vous n\'êtes pas autorisé à modifier cet utilisateur' });
         }
 
