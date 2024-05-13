@@ -23,7 +23,7 @@ router.put('/recipe/:recipeId', verifyToken, async (req, res) => {
 
         
         await Recipe.update(
-            { title, description, preparation_time, cooking_time, category },
+            { title, description, preparation_time, cooking_time,ustensils,ingredients,recipe  },
             { where: { id: recipeId } }
         );
 

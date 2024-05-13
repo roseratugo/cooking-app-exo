@@ -3,7 +3,7 @@ const router = express.Router();
 const Recipe = require('../models/recipe');
 const { verifyToken } = require('../middlewares/authMiddleware');
 
-router.delete('/recipe/:recipeId', verifyToken, async (req, res) => {
+router.delete('/favorite/:recipeId', verifyToken, async (req, res) => {
     try {
         const recipeId = req.params.recipeId;
         const userId = req.user.id;

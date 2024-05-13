@@ -30,6 +30,20 @@ export default {
         console.error('Erreur lors de la récupération des recettes:', error);
       }
     },
+    async removeFromFavorites() {
+      try {
+        // Envoyer une requête DELETE au backend pour supprimer la recette des favoris
+        const response = await axios.delete(`http://localhost:3000/favorite/${this.recipeId}`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('userToken')}`,
+          },
+        });
+        console.log(response.data.message);
+        // Actualiser la page ou effectuer d'autres actions après la suppression réussie de la recette des favoris
+      } catch (error) {
+        console.error('Erreur lors de la suppression de la recette des favoris:', error);
+      }
+    },
     goToTop() {
       // Défiler vers le haut de la page
       window.scrollTo({ top: 0, behavior: "smooth" });
@@ -205,30 +219,28 @@ export default {
 </div>
 
 
-
-<!-- Deuxième carte -->
-<div class="max-w-sm mt-10 ml-2 mr-2 md:mr-10 flex flex-wrap justify-center bg-white border border-red-950 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 items-center sm:flex-row sm:justify-start">
-    <a href="#">
-        <!-- Ajoutez une classe spécifique pour contrôler la taille de l'image en version PC -->
-        <img class="rounded-t-lg w-full md:h-100 object-cover" src="https://www.pourquoidocteur.fr/media/article/COPY_istock-1072044110-1631957027.jpg" alt="" />
+<div>
+  <!-- Boucle à travers les recettes et affiche chaque recette dans une carte -->
+  <div v-for="recipe in credentials.recipes" :key="recipe.id" class="max-w-sm mt-10 ml-2 mr-2 md:mr-10 flex flex-wrap justify-center bg-white border border-red-950 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 items-center sm:flex-row sm:justify-start">
+    <a :href="'/recipe/' + recipe.id">
+      <!-- Utilise l'attribut 'image_url' de la recette pour afficher l'image -->
+      <img class="rounded-t-lg w-full md:h-100 object-cover" :src="recipe.image_url" />
     </a>
     <div class="p-5 text-center sm:text-left">
-        <a href="#">
-            <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Poke Bowl</h5>
-        </a>
-        <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">Découvrez notre Poke Bowl exquis, mariant le
-            riz sushi à l'onctuosité de l'avocat, la fraîcheur du thon et la croquante des légumes. Une explosion de
-            saveurs hawaïennes dans un bol !</p>
-        <router-link to="/recipes">
-            <button class="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 mt-5 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-red-200 via-red-300 to-yellow-200 group-hover:from-red-200 group-hover:via-red-300 group-hover:to-yellow-200 dark:text-white dark:hover:text-gray-900 focus:ring-4 focus:outline-none focus:ring-red-100 dark:focus:ring-red-400">
-                <span class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
-                    Voir la recette
-                </span>
-            </button>
-        </router-link>
-        <button type="button" class="text-white bg-gradient-to-br from-orange-400 to-red-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-pink-200 dark:focus:ring-pink-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">Supprimer des favoris</button>
-
+      <a :href="'/recipe/' + recipe.id">
+        <!-- Affiche le titre de la recette -->
+        <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{{ truncate(recipe.title, 20) }}</h5>
+      </a>
+      <!-- Affiche la description de la recette -->
+      <p class="mb-3 font-normal text-gray-700 dark:text-gray-400 text-sm">{{ truncate(recipe.description, 50) }}</p>
+        <!-- Bouton pour voir la recette -->
+        <button @click="GoToRecipe(recipe.id)" class="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 mt-5 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-red-200 via-red-300 to-yellow-200 group-hover:from-red-200 group-hover:via-red-300 group-hover:to-yellow-200 dark:text-white dark:hover:text-gray-900 focus:ring-4 focus:outline-none focus:ring-red-100 dark:focus:ring-red-400">
+          <span class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
+            Voir la recette
+          </span>
+        </button>
     </div>
+  </div>
 </div>
 
 </div>

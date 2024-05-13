@@ -9,26 +9,43 @@ export default {
   },
   data() {
     return {
+      recipe: {},
       credentials: {
         username: "",
-        password: ""
+        password: "",
+        title: '',
+        description: '',
+        preparation_time: '',
+        cooking_time: '',
+        ustensils: '',
+        ingredients: '',
+        recipe: ''
       },
       loginError: false,
       isUserLoggedIn: false
     };
   },
   methods: {
-    async handleLogin() {
+    async getRecipe() {
       try {
-        const response = await axios.post(`http://localhost:3000/register`, this.credentials);
-        const token = response.data.token;
-        console.log(response);
-        localStorage.setItem('userToken', token);
-        this.loginError = false;
-        this.$router.push('/Home');
+        const response = await axios.get(`http://localhost:3000/recipe/${this.recipeId}`);
+        this.recipe = response.data;
       } catch (error) {
-        this.loginError = true;
-        console.log(error);
+        console.error('Erreur lors de la récupération de la recette:', error);
+      }
+    },
+    async updateRecipe() {
+      try {
+        const response = await axios.put(`http://localhost:3000/recipe/${this.recipeId}`, this.credentials, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('userToken')}`, // inclure le jeton d'authentification
+          },
+        });
+        console.log(response.data.message);
+        // Actualiser les détails de la recette avec les nouvelles données après la mise à jour réussie
+        this.recipe = response.data.updatedRecipe;
+      } catch (error) {
+        console.error('Erreur lors de la mise à jour de la recette:', error);
       }
     },
     
@@ -178,59 +195,66 @@ export default {
 
     <!-- ******************* Card Recette****************** -->
 
-    <hr class="w-48 h-1 mx-auto my-4 mt-10 mb-10 bg-amber-700 border-0 rounded md:my-10 dark:bg-gray-700">
-    <div class="flex justify-center">
-    <div class="mr-2 max-w-4xl">
-        <!-- Card 1: Description -->
-            <!-- Card 0: titre-->
-            <a href="#" class="block max-w-lg p-10 ml-2 bg-white border border-red-950 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
-            <h5 class="mb-2 text-2xl md:text-4xl font-bold tracking-tight text-red-950 dark:text-white">Titre</h5>
-            <textarea class="font-normal text-amber-700 dark:text-gray-400 resize-none outline-none border-b-2 border-red-950 p-5 w-full md:w-96" placeholder="Ajoutez un titre ici..."></textarea>
-        </a>
-          <!-- Espacement entre les cartes -->
-          <hr class="w-48 h-1 mx-auto my-4 bg-amber-700 border-0 rounded md:my-10 dark:bg-gray-700">
-        <a href="#" class="block max-w-lg p-10 ml-2 bg-white border border-red-950 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
-            <h5 class="mb-2 text-2xl md:text-4xl font-bold tracking-tight text-red-950 dark:text-white">Description</h5>
-            <textarea class="font-normal text-amber-700 dark:text-gray-400 resize-none outline-none border-b-2 border-red-950 p-5 w-full md:w-96" placeholder="Ajoutez une description ici..."></textarea>
-        </a>
 
-        <!-- Espacement entre les cartes -->
-        <hr class="w-48 h-1 mx-auto my-4 bg-amber-700 border-0 rounded md:my-10 dark:bg-gray-700">
-        <!-- Card 2: Indicateur de durée -->
-        <div class="p-10 ml-2 bg-white border border-red-950 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
-            <h5 class="mb-2 text-2xl md:text-4xl font-bold tracking-tight text-red-950 dark:text-white">Indicateur de durée</h5>
-            <textarea class="font-normal text-gray-700 dark:text-gray-400 resize-none outline-none border-b-2 border-red-950 p-5 w-full md:w-96" placeholder="Temps de préparation : 20 minutes"></textarea>
-            <br>
-            <textarea class="font-normal text-gray-700 dark:text-gray-400 resize-none outline-none border-b-2 border-red-950 p-5 w-full md:w-96" placeholder="Temps de cuisson : 10 minutes"></textarea>
-        </div>
-    </div>
+    <form @submit.prevent="updatedRecipe">
+
+<div  class="flex justify-center">
+<div class="mr-2 max-w-4xl">
+    <!-- Card 0: titre-->
+    <label class="block max-w-lg p-10 ml-2 bg-white border border-red-950 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
+        <h5 class="mb-2 text-2xl md:text-4xl font-bold tracking-tight text-red-950 dark:text-white">Titre</h5>
+        <textarea v-model="credentials.title" class="font-normal text-amber-700 dark:text-gray-400 resize-none outline-none border-b-2 border-red-950 p-5 w-full md:w-96" placeholder="Ajoutez un titre ici..."></textarea>
+    </label>
+      <!-- Espacement entre les cartes -->
+      <hr class="w-48 h-1 mx-auto my-4 bg-amber-700 border-0 rounded md:my-10 dark:bg-gray-700">
+
+    <!-- Card 1: description-->
+    <<label  class="block max-w-lg p-10 ml-2 bg-white border border-red-950 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
+        <h5 class="mb-2 text-2xl md:text-4xl font-bold tracking-tight text-red-950 dark:text-white">Description</h5>
+        <textarea v-model="credentials.description"class="font-normal text-amber-700 dark:text-gray-400 resize-none outline-none border-b-2 border-red-950 p-5 w-full md:w-96" placeholder="Ajoutez une description ici..."></textarea>
+    </label>
+
+    <!-- Espacement entre les cartes -->
+    <hr class="w-48 h-1 mx-auto my-4 bg-amber-700 border-0 rounded md:my-10 dark:bg-gray-700">
+    <!-- Card 2: Indicateur de durée -->
+    <div class="p-10 ml-2 bg-white border border-red-950 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
+        <h5 class="mb-2 text-2xl md:text-4xl font-bold tracking-tight text-red-950 dark:text-white">Indicateur de durée</h5>
+       <label type="number">
+        <textarea  v-model="credentials.preparation_time" class="font-normal text-gray-700 dark:text-gray-400 resize-none outline-none border-b-2 border-red-950 p-5 w-full md:w-96" placeholder="Temps de préparation : 20 minutes"></textarea>
+       </label><br>
+       <label >
+        <textarea v-model="credentials.cooking_time" class="font-normal text-gray-700 dark:text-gray-400 resize-none outline-none border-b-2 border-red-950 p-5 w-full md:w-96" placeholder="Temps de cuisson : 10 minutes"></textarea>
+       </label>
+      </div>
+</div>
 </div>
 
 <!-- Séparateur horizontal -->
 <hr class="w-48 h-1 mx-auto my-4 bg-amber-700 border-0 rounded md:my-10 dark:bg-gray-700">
+
+
 <div class="flex justify-center">
-    <!-- Card 3: Ustensiles nécessaires -->
-    <div class="max-w-4xl mx-auto "> 
-        <!-- Card 1: Ustensiles nécessaires -->
-        <a href="#" class="block p-10 bg-white border border-red-950 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
-            <div class="flex items-center justify-center mb-4"> 
-                <h5 class="text-xl md:text-4xl font-bold tracking-tight text-red-950 dark:text-white">Ustensiles nécessaires</h5>
-            </div>
-            <textarea class="font-normal text-amber-700 dark:text-gray-400 resize-none outline-none border-b-2 border-red-950 p-5 w-full md:w-96" placeholder="Ajoutez les ustensiles nécessaires ici..."></textarea>
-        </a>
-    </div>
+<!-- Card 3: Ustensiles nécessaires -->
+<div class="max-w-4xl mx-auto "> 
+    <label  class="block p-10 bg-white border border-red-950 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
+        <div class="flex items-center justify-center mb-4"> 
+            <h5 class="text-xl md:text-4xl font-bold tracking-tight text-red-950 dark:text-white">Ustensiles nécessaires</h5>
+        </div>
+        <textarea v-model="credentials.utensils" class="font-normal text-amber-700 dark:text-gray-400 resize-none outline-none border-b-2 border-red-950 p-5 w-full md:w-96" placeholder="Ajoutez les ustensiles nécessaires ici..."></textarea>
+      </label>
+</div>
 </div>
 <!-- Séparateur horizontal -->
 <hr class="w-48 h-1 mx-auto my-4 bg-amber-700 border-0 rounded md:my-10 dark:bg-gray-700">
 
 <!-- Card 4: Ingrédients nécessaires -->
 <div class="max-w-3xl mx-auto"> 
-    <a href="#" class="block p-10 bg-white border border-red-950 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
-        <div class="flex items-center justify-center mb-4"> 
-            <h5 class="text-xl md:text-4xl font-bold tracking-tight text-red-950 dark:text-white">Ingrédients nécessaires</h5>
-        </div>
-        <textarea class="font-normal text-amber-700 dark:text-gray-400 resize-none outline-none border-b-2 border-red-950 p-5 w-full md:w-96" placeholder="Ajoutez les ingrédients nécessaires ici..."></textarea>
-    </a>
+<label  class="block p-10 bg-white border border-red-950 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
+    <div class="flex items-center justify-center mb-4"> 
+        <h5 class="text-xl md:text-4xl font-bold tracking-tight text-red-950 dark:text-white">Ingrédients nécessaires</h5>
+    </div>
+    <textarea v-model="credentials.ingredients" class="font-normal text-amber-700 dark:text-gray-400 resize-none outline-none border-b-2 border-red-950 p-5 w-full md:w-96" placeholder="Ajoutez les ingrédients nécessaires ici..."></textarea>
+  </label>
 </div>
 
 <!-- Séparateur horizontal -->
@@ -238,37 +262,62 @@ export default {
 
 <!-- Card 5: Recette -->
 <div class="flex justify-center">
-    <a href="#" class="block max-w-4xl p-10 ml-2 bg-white border border-red-950 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
-        <h5 class="mb-2 text-2xl md:text-4xl font-bold text-center tracking-tight text-red-950 dark:text-white">Recette</h5>
-        <textarea class="font-normal text-gray-700 dark:text-gray-400 resize-none outline-none border-b-2 border-red-950 p-5 w-full md:w-96" placeholder="Ajoutez la recette ici..."></textarea>
-    </a>
+<label  class="block max-w-4xl p-10 ml-2 bg-white border border-red-950 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
+    <h5 class="mb-2 text-2xl md:text-4xl font-bold text-center tracking-tight text-red-950 dark:text-white">Recette</h5>
+    <textarea v-model="credentials.recipe" class="font-normal text-gray-700 dark:text-gray-400 resize-none outline-none border-b-2 border-red-950 p-5 w-full md:w-96" placeholder="Ajoutez la recette ici..."></textarea>
+</label>
 </div>
 
 
 <hr class="w-48 h-1 mx-auto my-4 bg-amber-700  border-0 rounded md:my-10 dark:bg-gray-700">
 
+
+
+<!-- Conteneur pour l'aperçu de l'image téléchargée -->
+<div v-if="isUploadSuccessVisible" class="relative flex justify-center items-center mt-10">
+<div class="bg-gradient-to-br from-green-400 to-blue-600 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-green-200 dark:focus:ring-green-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 text-white">
+<p>{{ uploadSuccessMessage }}</p>
+<button @click="isUploadSuccessVisible = false" class="absolute top-2 right-2 text-red-600 focus:outline-none">&times;</button>
+</div>
+</div>
+<div class="relative flex justify-center items-center mt-10">
+<button @click="validateForm" method="post" class="mt-5  relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-red-200 via-red-300 to-yellow-200 group-hover:from-red-200 group-hover:via-red-300 group-hover:to-yellow-200 dark:text-white dark:hover:text-gray-900 focus:ring-4 focus:outline-none focus:ring-red-100 dark:focus:ring-red-400">
+<span class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
+    Ajouter cette recette
+</span>
+</button>
+</div>
+</form>
 <!-- Bouton pour ajouter des photos -->
 <div class="relative flex justify-center items-center mt-10">
-    <button id="btnAddPhoto" class="relative z-10 inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-red-200 via-red-300 to-yellow-200 group-hover:from-red-200 group-hover:via-red-300 group-hover:to-yellow-200 dark:text-white dark:hover:text-gray-900 focus:ring-4 focus:outline-none focus:ring-red-100 dark:focus:ring-red-400">
-        <span class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
-            Ajouter des photos
-        </span>
-    </button>
+<form @submit.prevent="uploadPhotos" id="formUploadPhotos" method="post" enctype="multipart/form-data" class="hidden absolute top-0 left-0" >
 
-    <!-- Formulaire de téléchargement de fichiers (caché par défaut) -->
-    <form id="formUploadPhotos" class="hidden absolute top-0 left-0">
-        <input type="file" name="photos" accept="image/*" multiple>
-        <button type="submit">Envoyer</button>
-    </form>
-
+<input type="file" name="photos" accept="image/*" multiple @change="handleFileChange">
+<button type="submit" class="hidden">Envoyer</button>
+</form>
+</div>
+<div class="relative flex justify-center items-center mt-10">
+<button id="btnAddPhoto" method="post" class="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-green-400 to-blue-600 group-hover:from-green-400 group-hover:to-blue-600 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-green-200 dark:focus:ring-green-800">
+<span class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
+    Ajouter des photos
+</span>
+</button>
 </div>
 
-<div class="relative flex justify-center items-center mt-10">
-<button class="mt-10  relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-red-200 via-red-300 to-yellow-200 group-hover:from-red-200 group-hover:via-red-300 group-hover:to-yellow-200 dark:text-white dark:hover:text-gray-900 focus:ring-4 focus:outline-none focus:ring-red-100 dark:focus:ring-red-400">
-    <span class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
-        Modifier cette recette
-    </span>
-</button>
+
+
+
+<div v-if="globalError" class="fixed mb-28 inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 sm:mt-36 " @click="hideErrorMessage">
+  <div class="bg-white p-4 rounded-lg">
+    <p class="text-red-600 font-bold text-center">{{ globalErrorMessage }}</p>
+  </div>
+</div>
+
+
+<div v-if="showSuccessPopup" class="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-50" @click="hideSuccessPopup">
+  <div class="bg-white text-green-600 p-8 rounded-xl shadow-md">
+    <p>Votre recette a été modifier avec succès !</p>
+  </div>
 </div>
     <!-- ********************fin card recette***************** -->
 
