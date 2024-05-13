@@ -1,7 +1,6 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config');
 
-
 const Recipe = sequelize.define('Recipe', {
   id: {
     type: DataTypes.INTEGER,
@@ -20,11 +19,23 @@ const Recipe = sequelize.define('Recipe', {
   cooking_time: {
     type: DataTypes.TIME
   },
+  utensils: {
+    type: DataTypes.STRING 
+  },
+  ingredients: {
+    type: DataTypes.TEXT 
+  },
+  recipe: {
+    type: DataTypes.TEXT 
+  },
   user_id: {
     type: DataTypes.INTEGER
   },
   category: {
     type: DataTypes.STRING
+  },
+  image_url: {
+    type: DataTypes.STRING 
   }
 });
 

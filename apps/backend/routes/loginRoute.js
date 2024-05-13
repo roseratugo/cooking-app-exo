@@ -10,12 +10,7 @@ router.post('/login', async (req, res) => {
     const { username, email, password } = req.body;
 
     try {
-        const user = await User.findOne({ where: { 
-            [Op.or]: [
-                { username },
-                { email }
-            ]
-        } });
+        const user = await User.findOne({ where: { email } });
         if (!user || !await bcrypt.compare(password, user.password)) {
             return res.status(401).json({ error: "Erreur d'authentification" });
         }

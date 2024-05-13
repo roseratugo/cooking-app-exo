@@ -1,10 +1,9 @@
 <script setup>
-// import { ref } from 'vue'
-
+import { ref } from 'vue'
 import { Dialog, DialogPanel, DialogTitle, TransitionChild, TransitionRoot } from '@headlessui/vue'
 
 
-// const open = ref(true)
+const open = ref(true)
 </script>
 <template>
   <TransitionRoot as="template" :show="open">

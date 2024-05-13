@@ -5,7 +5,7 @@ const router = express.Router();
 router.get('/recipes', async (req, res) => {
     try {
         const recipes = await Recipe.findAll({
-            attributes: ['title', 'description'] 
+            attributes: ['id', 'title', 'description', 'image_url'] 
         });
         res.json(recipes);
     } catch (error) {

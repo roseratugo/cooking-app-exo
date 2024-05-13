@@ -1,21 +1,29 @@
 
 const express = require('express');
-const Recipe = require('../models/recipe'); 
+const Recipe = require('../models/recipe');
 const router = express.Router();
-const { verifyToken } = require('../middlewares/authMiddleware'); 
+const { verifyToken } = require('../middlewares/authMiddleware');
 
 
-router.post('/recipes', verifyToken, async (req, res) => {
-    const { title, description, preparation_time, cooking_time, category } = req.body;
-    const userId = req.user.id;
-    try {
+router.post('/recipe', verifyToken, async (req, res) => {
+      try { 
+      const { title, description, preparation_time, cooking_time, utensils, ingredients, recipe,image_url } = req.body;
+      const userId = req.user.id;
+    
+        
+ 
         const newRecipe = await Recipe.create({
             title,
             description,
             preparation_time,
             cooking_time,
+            utensils,
+            ingredients,
+            recipe,
+            image_url,
             user_id: userId,
-            category
+
+            
         });
         res.status(201).json(newRecipe);
     } catch (error) {

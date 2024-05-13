@@ -22,18 +22,4 @@ router.post('/register', async (req, res) => {
     }
 });
 
-router.post('/login', async (req, res) => {
-    const { username, password } = req.body;
-
-    try {
-        const user = await User.findOne({ where: { username } });
-        await bcrypt.compare(password, user.password)
-
-        const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '24h' });
-        res.json({ message: 'Connexion établie', token });
-    } catch (error) {
-        res.status(500).json({ error: 'Erreur interne du serveur' });
-    }
-});
-
 module.exports = router;

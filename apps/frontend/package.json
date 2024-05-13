@@ -9,8 +9,15 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@emailjs/browser": "^4.3.3",
     "@headlessui/vue": "^1.7.19",
+    "axios": "^1.6.8",
+    "dotenv": "^16.4.5",
+    "jsonwebtoken": "^9.0.2",
+    "nodemailer": "^6.9.13",
+    "start": "^5.1.0",
     "vue": "^3.4.21",
+    "vue-jwt-decode": "^0.1.0",
     "vue-router": "^4.3.0"
   },
   "devDependencies": {
