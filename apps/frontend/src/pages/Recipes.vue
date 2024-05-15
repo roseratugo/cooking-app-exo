@@ -74,7 +74,7 @@ async sendComment() {
 
         const savedComment = commentResponse.data;
 
-
+        window.location.reload()
     } catch (error) {
         console.error("Erreur lors de l'envoi du commentaire:", error);
     }

@@ -22,9 +22,7 @@ export default {
   created() {
     this.fetchCredentials();
   },
-  GoToRecipe(recipeId){
-      window.location.href = `/recipes/${recipeId}`
-    },
+ 
   methods: {
    async fetchCredentials() {
     const token = localStorage.getItem("userToken");
@@ -46,12 +44,24 @@ export default {
         this.credentials.email = response.data.email;
 
     },
-  
+   GoToRecipe(recipeId){
+      window.location.href = `/updaterecipe/${recipeId}`
+    },
     async fetchCredentials(recipeId) {
+      
   try {
-    const response = await axios.get(`http://localhost:3000/recipe/${this.recipeId}`);
-    console.log(response.data);
-    this.recipe = response.data
+    const token = localStorage.getItem("userToken");
+    const response = await axios({
+          method: "get",
+          url: "http://localhost:3000/recipe/test",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+
+        });
+    
+        this.credentials.recipes = response.data
     return ;
   } catch (error) {
     console.error('Erreur lors de la récupération des détails de la recette:', error);
@@ -59,6 +69,23 @@ export default {
   };
 
 },
+async deleteRecipe(recipeId) {
+      try {
+        const token = localStorage.getItem("userToken");
+       const response = await axios({
+        method: 'delete',
+        url: `http://localhost:3000/delete/${recipeId}`,
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+        }
+    })
+    window.location.reload()
+      } catch (error) {
+        console.error("Erreur lors de la suppression de la recette:", error);
+      }
+    },
+
     goToTop() {
       // Défiler vers le haut de la page
       window.scrollTo({ top: 0, behavior: "smooth" });
@@ -80,6 +107,12 @@ export default {
       localStorage.removeItem('userToken');
       localStorage.removeItem('popupDisplayed');
       this.$router.push('/connexion');
+    },
+    truncate(text, limit) {
+      if (text.length <= limit) {
+        return text;
+      }
+      return text.substring(0, limit) + '...';
     }
   },
   mounted() {
@@ -276,7 +309,7 @@ export default {
       <!-- Première carte -->
       <div>
   <!-- Boucle à travers les recettes et affiche chaque recette dans une carte -->
-  <div v-for="recipe in credentials.recipes" :key="recipe.id" class="max-w-sm mt-10 ml-2 mr-2 md:mr-10 flex flex-wrap justify-center bg-white border border-red-950 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 items-center sm:flex-row sm:justify-start">
+  <div v-if="credentials.recipes" v-for="recipe in credentials.recipes" :key="recipe.id" class="max-w-sm mt-10 ml-2 mr-2 md:mr-10 flex flex-wrap justify-center bg-white border border-red-950 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 items-center sm:flex-row sm:justify-start">
     <a :href="'/recipe/' + recipe.id">
       <!-- Utilise l'attribut 'image_url' de la recette pour afficher l'image -->
       <img class="rounded-t-lg w-full md:h-100 object-cover" :src="recipe.image_url" />
@@ -291,9 +324,15 @@ export default {
         <!-- Bouton pour voir la recette -->
         <button @click="GoToRecipe(recipe.id)" class="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 mt-5 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-red-200 via-red-300 to-yellow-200 group-hover:from-red-200 group-hover:via-red-300 group-hover:to-yellow-200 dark:text-white dark:hover:text-gray-900 focus:ring-4 focus:outline-none focus:ring-red-100 dark:focus:ring-red-400">
           <span class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
-            Voir la recette
+           Modifier la recette
           </span>
         </button>
+
+        <button @click="deleteRecipe(recipe.id)" class="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 mt-5 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-red-200 via-red-300 to-yellow-200 group-hover:from-red-200 group-hover:via-red-300 group-hover:to-yellow-200 dark:text-white dark:hover:text-gray-900 focus:ring-4 focus:outline-none focus:ring-red-100 dark:focus:ring-red-400">
+  <span class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
+    Supprimer
+  </span>
+</button>
     </div>
   </div>
 </div>

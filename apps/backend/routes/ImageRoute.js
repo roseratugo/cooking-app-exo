@@ -36,7 +36,7 @@ router.post('/recipes', async (req, res) => {
 
     // Récupérer l'URL de l'image depuis le corps de la requête
     const imagePath = req.body.imagePath;
-
+console.log(userId);
     const newRecipe = await Recipe.create({
       title,
       description,

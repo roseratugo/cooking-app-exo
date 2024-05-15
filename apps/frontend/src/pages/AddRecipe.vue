@@ -68,7 +68,7 @@ export default {
 
     const response = await axios({
       method: "post",
-      url: "http://localhost:3000/recipes",
+      url: "http://localhost:3000/recipe",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,

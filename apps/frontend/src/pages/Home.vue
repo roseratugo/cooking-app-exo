@@ -295,7 +295,7 @@ if (goToTopIcon) {
             c'est une manière de se connecter, de partager et de savourer la vie. Rejoignez-nous dès aujourd'hui et
             transformez chaque repas en une aventure mémorable.
             <br><br>
-            <strong class="text-red-900">R ! - Afin d'acceder à la création de recette, vous devez imperativement crée un compte Miam Miam !</strong>
+            <strong class="text-red-900"> Afin d'acceder à la création de recette, vous devez imperativement crée un compte Miam Miam !</strong>
 
 
             <br><br>

@@ -3,7 +3,7 @@ const router = express.Router();
 const Recipe = require('../models/recipe');
 const { verifyToken } = require('../middlewares/authMiddleware');
 
-router.delete('/favorite/:recipeId', verifyToken, async (req, res) => {
+router.delete('/delete/:recipeId', verifyToken, async (req, res) => {
     try {
         const recipeId = req.params.recipeId;
         const userId = req.user.id;
@@ -13,11 +13,10 @@ router.delete('/favorite/:recipeId', verifyToken, async (req, res) => {
             return res.status(404).json({ error: 'Recette introuvable' });
         }
         if (recipe.user_id !== userId) {
-            return res.status(403).json({ error: 'Vous n\'êtes pas autorisé à supprimer cette recette' });
+            return res.status(403).json({ error: 'Vous n/êtes pas autorisé à supprimer cette recette' });
         }
 
         await Recipe.destroy({ where: { id: recipeId } });
-
         res.json({ message: 'Recette supprimée avec succès' });
     } catch (error) {
         console.error(error);

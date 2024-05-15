@@ -1,12 +1,14 @@
 const express = require('express');
-const Recipe = require('../models/recipe'); 
+const Recipe = require('../models/recipe');
 const router = express.Router();
+const { verifyToken } = require('../middlewares/authMiddleware');
 
-router.get('/recipe/:recipeId', async (req, res) => {
+router.get('/recipe/test', verifyToken, async (req, res) => {
+    
     const recipeId = req.params.recipeId;
     try {
-        const recipe = await Recipe.findByPk(recipeId, {
-   
+        const recipe = await Recipe.findAll(recipeId, {
+            where: { user_id: req.user.id }
         });
         if (!recipe) {
             return res.status(404).json({ error: 'Recette non trouvée' });

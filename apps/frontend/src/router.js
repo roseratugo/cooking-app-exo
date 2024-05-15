@@ -43,7 +43,7 @@ const routes = [
         component: Account,
     },
     {
-        path: '/updaterecipe',
+        path: '/updaterecipe/:id',
         name: 'updaterecipe',
         component: UpdateRecipe,
     },
