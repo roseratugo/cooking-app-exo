@@ -61,7 +61,7 @@ const routes = [
         component: UpdateMdp,
     },
     {
-        path: '/newmdp',
+        path: '/newmdp/:id',
         name: '/newmdp',
         component: NewMdp,
     },

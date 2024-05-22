@@ -14,9 +14,6 @@ const Recipe = sequelize.define('Recipe', {
     type: DataTypes.TEXT
   },
   preparation_time: {
-    type: DataTypes.INTEGER
-  },
-  cooking_time: {
     type: DataTypes.TIME
   },
   utensils: {
@@ -30,9 +27,6 @@ const Recipe = sequelize.define('Recipe', {
   },
   user_id: {
     type: DataTypes.INTEGER
-  },
-  category: {
-    type: DataTypes.STRING
   },
   image_url: {
     type: DataTypes.STRING 

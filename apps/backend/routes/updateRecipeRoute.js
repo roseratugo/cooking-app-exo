@@ -1,18 +1,16 @@
 const express = require('express');
 const Recipe = require('../models/recipe');
 const { verifyToken } = require('../middlewares/authMiddleware');
-
 const router = express.Router();
 
 router.put('/update/:recipeId', verifyToken, async (req, res) => {
     try {
         console.log(req.body);
-        const { title, description, preparation_time, cooking_time, utensils, ingredients, recipe,image_url } = req.body;
+        const { title, description, preparation_time,utensils, ingredients, recipe,image_url } = req.body;
         const recipeId = await Recipe.update({
             title,
             description,
             preparation_time,
-            cooking_time,
             utensils,
             ingredients,
             recipe,

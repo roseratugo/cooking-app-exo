@@ -31,7 +31,7 @@ router.post('/image', upload.single('photo'), async (req, res) => {
 // Route pour créer une recette avec l'URL de l'image
 router.post('/recipes', async (req, res) => {
   try {
-    const { title, description, preparation_time, cooking_time, utensils, ingredients, recipe } = req.body;
+    const { title, description, preparation_time, utensils, ingredients, recipe } = req.body;
     const userId = req.user.id;
 
     // Récupérer l'URL de l'image depuis le corps de la requête
@@ -41,7 +41,6 @@ console.log(userId);
       title,
       description,
       preparation_time,
-      cooking_time,
       utensils,
       ingredients,
       recipe,

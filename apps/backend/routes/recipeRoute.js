@@ -7,7 +7,7 @@ const { verifyToken } = require('../middlewares/authMiddleware');
 
 router.post('/recipe', verifyToken, async (req, res) => {
       try { 
-      const { title, description, preparation_time, cooking_time, utensils, ingredients, recipe,image_url } = req.body;
+      const { title, description, preparation_time, utensils, ingredients, recipe,image_url } = req.body;
       const userId = req.user.id;
     
         
@@ -16,7 +16,6 @@ router.post('/recipe', verifyToken, async (req, res) => {
             title,
             description,
             preparation_time,
-            cooking_time,
             utensils,
             ingredients,
             recipe,
