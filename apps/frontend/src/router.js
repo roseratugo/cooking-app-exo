@@ -12,7 +12,7 @@ import NewMdp from './pages/NewMdp.vue';
 import FavoriteRecipe from './pages/FavoriteRecipe.vue';
 const routes = [
     {
-        path: '/home',
+        path: '/',
         name: 'Home',
         component: Home,
     },
