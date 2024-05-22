@@ -148,15 +148,15 @@ async sendEmail() {
 
 
     <!-- ******************Debut Image *************** -->
-
-
     <div class="img">
     <div class="img h-auto md:text-center" aria-label="image">
         <a href="#" class="flex justify-center" aria-label="Lien vers votre destination">
-            <img class="rounded-lg h-40 md:h-52 lg:h-64" src="C:\Users\AdminVia\Downloads\M (3).png" alt="Image de description" />
+            <img class="rounded-lg h-40 md:h-52 lg:h-64" src="/image/logo.png" alt="Image de description" />
         </a>
     </div>
 </div>
+
+
 
 
     <!-- ******************Fin Image************** -->
