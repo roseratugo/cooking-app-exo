@@ -458,9 +458,11 @@ formatDate(dateString) {
 
 <!-- ***********************fin card commentaire****************** -->
 
-<div class="card w-16 h-16 mx-auto mt-5 bg-white border  rounded-full shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
-  <img id="goToTop" src="/image/fleche-vers-le-haut-chevron.png" alt="Flèche vers le haut" class="w-full h-full" />
-</div>
+<div
+      class="card w-16 h-16 mx-auto mt-5 bg-white border  rounded-full shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
+      <img id="goToTop" src="/image/fleche-vers-le-haut-chevron.png" alt="Flèche vers le haut"
+        class="w-full h-full" />
+    </div>
 
 
 <!-- *****************************************************************fin card recette**************************************************************************************** -->
