@@ -18,14 +18,20 @@ router.post('/register', async (req, res) => {
 
     // Vérification du format du mot de passe
     if (!passwordRegex.test(password)) {
-        return res.status(400).json({ error: 'Mot de passe incorrect' });
+        return res.status(400).json({ error: 'Le mot de passe doit contenir au moins 7 caractères, incluant au moins une lettre majuscule, une lettre minuscule, un chiffre et un caractère spécial.' });
     }
 
     try {
-        // Vérification si l'utilisateur existe déjà
-        const existingUser = await User.findOne({ where: { email } });
+        // Vérification si l'utilisateur ou l'email existe déjà
+        const existingUser = await User.findOne({ where: { username } });
+        const existingEmail = await User.findOne({ where: { email } });
+
         if (existingUser) {
-            return res.status(400).json({ error: 'Erreur d/auhtentififcation' });
+            return res.status(409).json({ error: 'Le nom d\'utilisateur est déjà utilisé.' });
+        }
+
+        if (existingEmail) {
+            return res.status(409).json({ error: 'L\'adresse email est déjà utilisée.' });
         }
 
         // Hachage du mot de passe
@@ -47,6 +53,3 @@ router.post('/register', async (req, res) => {
 });
 
 module.exports = router;
-
-
-

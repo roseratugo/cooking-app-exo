@@ -21,6 +21,8 @@ router.post('/favorite/:recipeId', verifyToken, async (req, res) => {
     }
 });
 
+
+
 router.get('/favorite/all',verifyToken, async (req, res) => {
     const userId = req.user.id;
     try {

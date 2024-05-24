@@ -4,7 +4,6 @@ const { Sequelize } = require('sequelize'); // Importer Sequelize
 const sequelize = require('./config'); // Importer l'objet Sequelize initialisé
 const path = require('path')
 
-
 const authentificationRoute = require("./routes/authentificationRoute");
 const loginRoute = require("./routes/loginRoute");
 const updateUserRoute = require("./routes/updateUserRoute");
@@ -49,7 +48,6 @@ app.use("/", authentificationRoute,
       RecipeUserIDRoute,
       FavoriteRecipeRoute,
      UploadImageRoute,);
-
 
 sequelize.sync().then(() => {
     app.listen(PORT, HOST, () => {

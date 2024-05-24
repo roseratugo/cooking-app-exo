@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const User = require('../models/user'); 
-const crypto = require('crypto'); // Ajout pour la génération du token
 const { verifyToken } = require('../middlewares/authMiddleware'); 
 
 // Route pour obtenir les informations de l'utilisateur

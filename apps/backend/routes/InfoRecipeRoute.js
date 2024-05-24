@@ -3,21 +3,16 @@ const Recipe = require('../models/recipe');
 const router = express.Router();
 const { verifyToken } = require('../middlewares/authMiddleware');
 
-router.get('/recipe/test', verifyToken, async (req, res) => {
-    
-    const recipeId = req.params.recipeId;
-    try {
-        const recipe = await Recipe.findAll(recipeId, {
+router.get('/test', verifyToken, async (req, res) => {
+     const recipes = await Recipe.findAll({
             where: { user_id: req.user.id }
         });
-        if (!recipe) {
-            return res.status(404).json({ error: 'Recette non trouvée' });
+        if (recipes.length === 0) {
+            return res.status(404).json({ error: 'Aucune recette trouvée pour cet utilisateur' });
         }
-        res.json(recipe);
-    } catch (error) {
-        console.error('Erreur lors de la récupération de la recette:', error);
-        res.status(500).json({ error: 'Erreur interne du serveur' });
-    }
+        res.json(recipes);
 });
+
+
 
 module.exports = router;

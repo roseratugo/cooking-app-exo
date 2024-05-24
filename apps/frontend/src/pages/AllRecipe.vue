@@ -69,7 +69,7 @@ export default {
 <template>
 
 <div class="picture">
-    <!-- *******************Headbar avec icônes********************* -->
+    <!-- ****************************************************************************Headbar avec icônes********************************************************************************* -->
     
     <nav class="bg-amber-700 ml-6 mr-6 mt-5 rounded-xl border-red-950 dark:bg-gray-900">
        <div class="max-w-screen-xl flex items-center justify-between p-2">
@@ -79,8 +79,8 @@ export default {
          <div class="flex items-center space-x-4">
          <!-- Bouton Home -->
          <div class="hidden sm:block">
-           <router-link to="/home">
-             <button data-tooltip-target="tooltip-home" type="button" class="inline-flex flex-col items-center justify-center px-5 rounded-s-full dark:hover:bg-gray-800 group">
+           <router-link to="/">
+             <button data-tooltip-target="tooltip-/" type="button" class="inline-flex flex-col items-center justify-center px-5 rounded-s-full dark:hover:bg-gray-800 group">
                <svg class="w-6 h-6 text-black-700 dark:text-gray-400" aria-hidden="true" xmlns="" fill="currentColor" viewBox="0 0 20 20">
                  <path d="m19.707 9.293-2-2-7-7a1 1 0 0 0-1.414 0l-7 7-2 2a1 1 0 0 0 1.414 1.414L2 10.414V18a2 2 0 0 0 2 2h3a1 1 0 0 0 1-1v-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 0 1 1h3a2 2 0 0 0 2-2v-7.586l.293.293a1 1 0 0 0 1.414-1.414Z" />
                </svg>
@@ -119,25 +119,24 @@ export default {
      </div>
    </nav>
     
-    <!-- *******************Fin Headbar avec icônes********************* -->
+    <!-- ********************************************************************Fin Headbar avec icônes******************************************************************************************** -->
     
-    <!-- Supprimer la barre de navigation existante -->
+  
     
     
     
-      <!-- *******************phrase d'accroche********** -->
+      <!-- *******************************************************************phrase d'accroche***************************************************************************************** -->
       <div class="flex justify-center items-center mt-10 rounded-lg border-amber-700 bg-red-950 ml-2 mr-2" aria-label="En tête">
-      <span
-        class="text-2xl lg:text-4xl xl:text-4xl font-serif italic p-4 rounded-lg text-amber-700 sm:text-center">Cuisiner,Partager,Savourer
-        !</span>
-    </div>
-    <!-- ******************* fin phrase d'accroche********** -->
+  <span class="text-2xl lg:text-4xl xl:text-4xl font-serif italic p-4 rounded-lg text-amber-700 text-center">
+    Cuisiner, Partager, Savourer !
+  </span>
+</div>
+    <!-- ****************************************************************** fin phrase d'accroche***************************************************************************************** -->
     
     
     
     
-      <!-- ******************Debut Image *************** -->
-    
+      <!-- ***********************************************************************Debut Image ************************************************************************************************ -->
     
     
       <div class="img">
@@ -149,48 +148,42 @@ export default {
 </div>
 
     
-    
-      <!-- ******************Fin Image************** -->
-    
+      <!-- ************************************************************************Fin Image************************************************************************************************* -->
     
     
     
-    
-        <!-- ********************card compte******************* -->
-       
-       <!-- Barre horizontale visible uniquement sur les écrans plus grands que la taille moyenne -->
-   
-    <!-- Barre horizontale visible uniquement sur les écrans mobiles -->
-   
-  <!-- ******************Fin Image************** -->
+  
+     
+  <!-- **********************************************************************titre recettes************************************************************************************************ -->
+
   <hr class="block md:hidden mr-20 ml-20 h-1 mt-20 my-4 bg-amber-700  border-0 rounded dark:bg-gray-700">
 
 
-  <!-- ***********titre recettes************* -->
+ 
   <div class="flex justify-center items-center mt-10 rounded-lg border-amber-700 bg-red-950 ml-2 mr-2">
   <span class="text-3xl lg:text-4xl xl:text-5xl font-serif italic p-4 rounded-lg text-amber-700 sm:text-center">Recette</span>
 </div>
 
 <hr class="hidden md:block w-full md:w-3/4 h-1 mt-20 mx-auto my-4 bg-amber-700  border-0 rounded md:my-10 dark:bg-gray-700 md:mx-auto md:px-20 sm:w-10">
     
-<!-- **************fin titre recettes********** -->
+
 
 <hr class="block md:hidden mr-20 ml-20 h-1 mt-20 my-4 bg-amber-700  border-0 rounded dark:bg-gray-700">
 
-
+<!-- ******************************************************************************fin titre recettes******************************************************************************************* -->
  
 
 
 
-  <!-- ******************* Card Recette****************** -->
+ <!-- ****************************************************************************** Card Recette******************************************************************************************** -->
 
   
-<div class="flex flex-wrap justify-center">
+<div class="flex flex-wrap justify-center mb-20">
   <!-- Boucle à travers les recettes et affiche chaque recette dans une carte -->
   <div v-for="recipe in credentials.recipes" :key="recipe.id" class="w-full md:w-1/2 lg:w-1/3 xl:w-1/4 max-w-sm mt-10 ml-2 mr-2 md:mr-10 bg-white border border-red-950 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
     <a :href="'/recipe/' + recipe.id">
       <!-- Utilise l'attribut 'image_url' de la recette pour afficher l'image -->
-      <img class="rounded-t-lg w-full md:h-100 object-cover" :src="recipe.image_url" />
+      <img class="rounded-t-lg w-full md:h-100 object-cover" :src="recipe.image_url" alt="#" />
     </a>
     <div class="p-5 text-center sm:text-left">
       <a :href="'/recipe/' + recipe.id">
@@ -215,23 +208,35 @@ export default {
 
 <hr class="w-48 h-1 mx-auto mt-10 my-4 bg-amber-700 border-0 rounded md:my-10 dark:bg-gray-700">
 
-  <!-- ********************fin card recette***************** -->
+<!-- *****************************************************************fin card recette******************************************************************************************************* -->
 
-  <div
-      class="card w-16 h-16 mx-auto mt-5 bg-white border  rounded-full shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
-      <img id="goToTop" src="/image/fleche-vers-le-haut-chevron.png" alt="Flèche vers le haut"
-        class="w-full h-full" />
-    </div>
 
-   <!-- *******************navbar************************ -->
 
+
+
+<!-- *****************************************************************Icone de naviguation******************************************************************************************************* -->
+
+  <div id="goToTop" class="fixed z-50 bottom-20 right-5">
+  <div class="card w-16 h-16 bg-white border rounded-full shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
+    <img id="goToTop" src="/image/fleche-vers-le-haut-chevron.png" alt="Flèche vers le haut" class="w-full h-full" />
+  </div>
+</div>
+<!-- *****************************************************************Fin icone de naviguation******************************************************************************************************* -->
+
+
+
+
+
+
+
+<!-- ************************************************************************navbar*********************************************************************************************************** -->
 
 
    <div class="md:hidden"> <!-- Masquer la barre de navigation sur les écrans de taille moyenne et plus grands -->
   <div
     class="fixed z-50 w-full h-16 max-w-lg -translate-x-1/2 bg-amber-700 border border-red-950 rounded-full bottom-4 left-1/2 dark:bg-gray-700 dark:border-gray-600">
-    <div :class="{'grid-cols-4': isUserLoggedIn, 'grid-cols-3': !isUserLoggedIn}" class="grid h-full max-w-lg grid-cols-4 gap-2 mx-auto">
-      <router-link to="/home">
+    <div :class="{'grid-cols-4': isUserLoggedIn, 'grid-cols-3 ml-16': !isUserLoggedIn}" class="grid h-full max-w-lg grid-cols-4 gap-2 mx-auto">
+      <router-link to="/">
         <button data-tooltip-target="tooltip-home" type="button"
           class="inline-flex flex-col items-center justify-center px-5 rounded-s-full  dark:hover:bg-gray-800 group">
           <svg class="w-5 h-5 mb-1 ml-5 mt-5 text-black-500 dark:text-gray-400"
@@ -242,7 +247,7 @@ export default {
           <span class="sr-only">Home</span>
         </button>
       </router-link>
-      <div id="tooltip-home" role="tooltip"
+      <div id="tooltip-/" role="tooltip"
         class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700">
         Home
         <div class="tooltip-arrow" data-popper-arrow></div>
@@ -293,16 +298,20 @@ export default {
 </div>
 
 
-    <!-- *******************fin navbar****************** -->
+    <!-- ************************************************************************fin navbar********************************************************************************************** -->
 
-    <!-- ******************Footer debut ***********-->
+
+
+
+
+    <!-- ***************************************************************************Footer debut **************************************************************************************************-->
 
 
     
     <div class="hidden md:block" aria-label="barre de naviguation sur mobile">
 <footer class="bg-white rounded-lg shadow m-4 dark:bg-gray-800">
     <div class="w-full mx-auto max-w-screen-xl p-4 md:flex md:items-center md:justify-between">
-      <span class="text-sm text-gray-500 sm:text-center dark:text-gray-400">© 2023 <a href="#" class="hover:underline">Miam Miam™</a>. All Rights Reserved.
+      <span class="text-sm text-gray-500 sm:text-center dark:text-gray-400">© 2024 <a href="#" class="hover:underline">Miam Miam™</a>. All Rights Reserved.
     </span>
     <ul class="flex flex-wrap items-center mt-3 text-sm font-medium text-gray-500 dark:text-gray-400 sm:mt-0">
         <li>
@@ -325,7 +334,7 @@ export default {
 
 
 
-  <!-- *******************Footer fin*************** -->
+  <!-- ************************************************************************************Footer fin********************************************************************************* -->
 
 
 

@@ -5,7 +5,7 @@ const sequelize = new Sequelize('projetcooking', 'root', '', {
   dialect: 'mysql',
 });
 
-// Test the database connection
+// Test de la connexion à la bdd
 sequelize.authenticate()
   .then(() => {
     console.log('Successfully connected to the database.');

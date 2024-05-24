@@ -17,7 +17,7 @@ router.get('/recipe/:recipeId',  async (req, res) => {
         console.log(recipe);
     } 
     catch (error) {
-        console.error('Erreur lors de la récupération de la recette:', error);
+        console.error('Erreur lors de la récupération de la recette :', error);
         res.status(500).json({ error: 'Erreur interne du serveur' });
     }
 });

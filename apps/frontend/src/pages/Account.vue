@@ -53,7 +53,7 @@ export default {
     const token = localStorage.getItem("userToken");
     const response = await axios({
           method: "get",
-          url: "http://localhost:3000/recipe/test",
+          url: "http://localhost:3000/test",
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
@@ -136,7 +136,7 @@ async deleteRecipe(recipeId) {
 <template>
 
   <div class="picture">
-    <!-- *******************Headbar avec icônes********************* -->
+    <!-- **********************************************************************************Headbar avec icônes********************************************************************************** -->
 
     <nav class="bg-amber-700 ml-6 mr-6 mt-5 rounded-xl border-red-950 dark:bg-gray-900">
        <div class="max-w-screen-xl flex items-center justify-between p-2">
@@ -146,8 +146,8 @@ async deleteRecipe(recipeId) {
          <div class="flex items-center space-x-4">
          <!-- Bouton Home -->
          <div class="hidden sm:block">
-           <router-link to="/home">
-             <button data-tooltip-target="tooltip-home" type="button" class="inline-flex flex-col items-center justify-center px-5 rounded-s-full dark:hover:bg-gray-800 group">
+           <router-link to="/">
+             <button data-tooltip-target="tooltip-/" type="button" class="inline-flex flex-col items-center justify-center px-5 rounded-s-full dark:hover:bg-gray-800 group">
                <svg class="w-6 h-6 text-black-700 dark:text-gray-400" aria-hidden="true" xmlns="" fill="currentColor" viewBox="0 0 20 20">
                  <path d="m19.707 9.293-2-2-7-7a1 1 0 0 0-1.414 0l-7 7-2 2a1 1 0 0 0 1.414 1.414L2 10.414V18a2 2 0 0 0 2 2h3a1 1 0 0 0 1-1v-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 0 1 1h3a2 2 0 0 0 2-2v-7.586l.293.293a1 1 0 0 0 1.414-1.414Z" />
                </svg>
@@ -185,24 +185,24 @@ async deleteRecipe(recipeId) {
        </div>
      </div>
    </nav>
-    <!-- *******************Fin Headbar avec icônes********************* -->
+    <!-- *****************************************************************************Fin Headbar avec icônes***************************************************************************** -->
 
-    <!-- Supprimer la barre de navigation existante -->
+   
 
 
 
     <!-- *******************phrase d'accroche********** -->
     <div class="flex justify-center items-center mt-10 rounded-lg border-amber-700 bg-red-950 ml-2 mr-2" aria-label="En tête">
-      <span
-        class="text-2xl lg:text-4xl xl:text-4xl font-serif italic p-4 rounded-lg text-amber-700 sm:text-center">Cuisiner,Partager,Savourer
-        !</span>
-    </div>
-    <!-- ******************* fin phrase d'accroche********** -->
+  <span class="text-2xl lg:text-4xl xl:text-4xl font-serif italic p-4 rounded-lg text-amber-700 text-center">
+    Cuisiner, Partager, Savourer !
+  </span>
+</div>
+    <!-- **************************************************************************** fin phrase d'accroche******************************************************************************** -->
 
 
 
 
-    <!-- ******************Debut Image *************** -->
+    <!-- *************************************************************************Debut Image ************************************************************************************************* -->
 
 
 
@@ -214,9 +214,14 @@ async deleteRecipe(recipeId) {
     </div>
 </div>
 
-    <!-- ******************Fin Image************** -->
+    <!-- *****************************************************************************Fin Image******************************************************************************************* -->
 
-    <!-- ***********titre bienvenue************* -->
+
+
+
+
+
+    <!-- *****************************************************************************titre bienvenue*********************************************************************************************************** -->
     <hr class="block md:hidden mr-20 ml-20 h-1 mt-20 my-4 bg-amber-700 border-0 rounded dark:bg-gray-700">
 
     <div class="flex justify-center items-center mt-10 rounded-lg border-amber-700 bg-red-950 ml-2 mr-2">
@@ -225,11 +230,14 @@ async deleteRecipe(recipeId) {
         chez toi </span>
     </div>
 
-    <!-- **************fin titre Bienvenue********** -->
+    <!-- ***************************************************************************fin titre Bienvenue************************************************************************************ -->
 
 
 
-    <!-- ********************card compte******************* -->
+
+
+
+    <!-- ***************************************************************************Debut card compte*************************************************************************************** -->
 
     <!-- Barre horizontale visible uniquement sur les écrans plus grands que la taille moyenne -->
     <hr
@@ -243,9 +251,9 @@ async deleteRecipe(recipeId) {
       <div
         class="w-full max-w-4xl p-4 mx-auto bg-red-950 border border-amber-700 rounded-lg shadow-md sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700">
         <form class="space-y-6" action="#">
-          <h5 class="text-xl font-medium underline text-amber-700 dark:text-white">Compte Miam Miam</h5>
+          <h5 class="text-3xl font-medium underline text-amber-600 dark:text-white">Compte Miam Miam</h5>
           <div>
-            <label for="username" class="block mb-2 text-sm font-medium text-amber-700 dark:text-white">Nom
+            <label for="username" class="block mb-2 text-xl font-medium text-amber-600 dark:text-white">Nom
               d'utilisateur</label>
             <input type="text" v-model="credentials.username" name="username"id="username"
               class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-amber-700 focus:border-amber-700 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
@@ -253,7 +261,7 @@ async deleteRecipe(recipeId) {
 
           </div>
           <div>
-            <label for="email" class="block mb-2 text-sm font-medium text-amber-700 dark:text-white">Adresse
+            <label for="email" class="block mb-2 text-xl font-medium text-amber-600 dark:text-white">Adresse
               mail</label>
             <input type="email" v-model="credentials.email" name="email" id="email"
               class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-amber-700 focus:border-amber-700 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
@@ -280,23 +288,28 @@ async deleteRecipe(recipeId) {
 
 </router-link>
 
-    <!-- *********************fin card compte******************* -->
+    <!-- *************************************************************************fin card compte*********************************************************************************************** -->
 
 
 
 
-    <!--****************** Debut Recettes ajouter ********************-->
+    <!--******************************************************************** Debut Recettes ajouter ***************************************************************************************-->
     <!-- Barre horizontale supérieure -->
-    <hr class="w-64 md:w-96 h-1 mx-auto my-4 md:my-10 bg-amber-700 border-0 rounded dark:bg-gray-700">
+    <div class="relative">
+  <!-- Fond d'écran -->
+  <div class="absolute inset-0 bg-red-950 w-64 md:w-96  mx-auto  border-0 rounded "></div>
+   <!-- Barre horizontale supérieure -->
+  <hr class="w-64 md:w-96 h-1 mx-auto my-4 md:my-10 bg-amber-700 border-0 rounded dark:bg-gray-700 z-10 relative">
 
-    <!-- Titre "Mes créations" -->
-    <div class="flex justify-center items-center mt-10 mb-10">
-      <h1 class="text-4xl md:text-6xl text-amber-700 font-serif">Mes créations</h1>
-    </div>
+  <!-- Titre "Mes créations" -->
+  <div class="flex justify-center items-center mt-10 mb-10 z-10 relative">
+    <h1 class="text-4xl md:text-6xl text-amber-700 font-serif">Mes créations</h1>
+  </div>
 
-    <!-- Barre horizontale inférieure -->
-    <hr class="w-64 md:w-96 h-1 mx-auto my-4 md:my-10 bg-amber-700 border-0 rounded dark:bg-gray-700">
-
+ 
+  <!-- Barre horizontale inférieure -->
+  <hr class="w-64 md:w-96 h-1 mx-auto my-4 md:my-10 bg-amber-700 border-0 rounded dark:bg-gray-700 z-10 relative">
+</div>
 
 
 
@@ -310,13 +323,17 @@ async deleteRecipe(recipeId) {
     </a>
     <div class="p-5 text-center sm:text-left">
       <a :href="'/recipe/' + recipe.id">
-        <!-- Affiche le titre de la recette -->
-        <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{{ truncate(recipe.title, 20) }}</h5>
+        <!-- Affiche le titre de la recette comme texte de lien -->
+        <h1 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{{ truncate(recipe.title, 20) }}</h1>
       </a>
+  
+
       <!-- Affiche la description de la recette -->
       <p class="mb-3 font-normal text-gray-700 dark:text-gray-400 text-sm">{{ truncate(recipe.description, 50) }}</p>
+
+      
       <!-- Bouton pour voir la recette -->
-        <!-- Bouton pour voir la recette -->
+
         <button @click="GoToRecipe(recipe.id)" class="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 mt-5 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-red-200 via-red-300 to-yellow-200 group-hover:from-red-200 group-hover:via-red-300 group-hover:to-yellow-200 dark:text-white dark:hover:text-gray-900 focus:ring-4 focus:outline-none focus:ring-red-100 dark:focus:ring-red-400">
           <span class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
            Modifier la recette
@@ -343,24 +360,45 @@ async deleteRecipe(recipeId) {
     <hr class="block md:hidden mr-20 ml-20 h-1 mt-20 my-4 bg-amber-700 border-0 rounded dark:bg-gray-700">
 
 
-    <!-- *****************fin recettes ajouter***************** -->
-
-    <div
-      class="card w-16 h-16 mx-auto mt-5 bg-white border  rounded-full shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
-      <img id="goToTop" src="/image/fleche-vers-le-haut-chevron.png" alt="Flèche vers le haut"
-        class="w-full h-full" />
-    </div>
-
-    <!-- *******************navbar************************ -->
+    <!-- **************************************************************************fin recettes ajouter********************************************************************************* -->
 
 
 
- 
+
+
+
+
+
+
+   <!-- **************************************************************************Debut icone de naviguation******************************************************************************** -->
+    <div id="goToTop" class="fixed z-50 bottom-20 right-5">
+  <div class="card w-16 h-16 bg-white border rounded-full shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
+    <img id="goToTop" src="/image/fleche-vers-le-haut-chevron.png" alt="Flèche vers le haut" class="w-full h-full" />
+  </div>
+</div>
+
+   <!-- **************************************************************************Fin icone de naviguation************************************************************************************** -->
+
+
+
+
+
+
+
+
+
+
+
+
+    <!-- *************************************************************************navbar**************************************************************************************************** -->
+
+
+
     <div class="md:hidden"> <!-- Masquer la barre de navigation sur les écrans de taille moyenne et plus grands -->
   <div
     class="fixed z-50 w-full h-16 max-w-lg -translate-x-1/2 bg-amber-700 border border-red-950 rounded-full bottom-4 left-1/2 dark:bg-gray-700 dark:border-gray-600">
-    <div :class="{'grid-cols-4': isUserLoggedIn, 'grid-cols-3': !isUserLoggedIn}" class="grid h-full max-w-lg grid-cols-4 gap-2 mx-auto">
-      <router-link to="/home">
+    <div :class="{'grid-cols-4': isUserLoggedIn, 'grid-cols-3 ml-16': !isUserLoggedIn}" class="grid h-full max-w-lg grid-cols-4 gap-2 mx-auto">
+      <router-link to="/">
         <button data-tooltip-target="tooltip-home" type="button"
           class="inline-flex flex-col items-center justify-center px-5 rounded-s-full  dark:hover:bg-gray-800 group">
           <svg class="w-5 h-5 mb-1 ml-5 mt-5 text-black-500 dark:text-gray-400"
@@ -371,7 +409,7 @@ async deleteRecipe(recipeId) {
           <span class="sr-only">Home</span>
         </button>
       </router-link>
-      <div id="tooltip-home" role="tooltip"
+      <div id="tooltip-/" role="tooltip"
         class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700">
         Home
         <div class="tooltip-arrow" data-popper-arrow></div>
@@ -421,16 +459,22 @@ async deleteRecipe(recipeId) {
   </div>
 </div>
 
+    <!-- ************************************************************fin navbar******************************************************************************************************************** -->
 
-    <!-- *******************fin navbar****************** -->
 
-    <!-- ******************Footer debut ***********-->
+
+
+
+
+
+
+    <!-- ************************************************************Footer debut *************************************************************************************************************-->
 
 
     <div class="hidden md:block" aria-label="barre de naviguation sur mobile">
 <footer class="bg-white rounded-lg shadow m-4 dark:bg-gray-800">
     <div class="w-full mx-auto max-w-screen-xl p-4 md:flex md:items-center md:justify-between">
-      <span class="text-sm text-gray-500 sm:text-center dark:text-gray-400">© 2023 <a href="#" class="hover:underline">Miam Miam™</a>. All Rights Reserved.
+      <span class="text-sm text-gray-500 sm:text-center dark:text-gray-400">© 2024 <a href="#" class="hover:underline">Miam Miam™</a>. All Rights Reserved.
     </span>
     <ul class="flex flex-wrap items-center mt-3 text-sm font-medium text-gray-500 dark:text-gray-400 sm:mt-0">
         <li>
@@ -452,17 +496,15 @@ async deleteRecipe(recipeId) {
 </div>
 
 
-    <!-- *******************Footer fin*************** -->
-
-
-
-
+    <!-- ***************************************************************Footer fin********************************************************************************************************************************** -->
 
 
   </div>
 
 
 </template>
+
+
 
 
 <style scoped>

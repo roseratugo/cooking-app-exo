@@ -10,16 +10,15 @@ export default {
   data() {
     return {
       credentials: {
-        title:"",
-        description:"",
+        title: "",
+        description: "",
         preparation_time: "",
-        utensils:"",
-        ingredients:"",
-        recipe:"",
-        user_id:"",
+        utensils: "",
+        ingredients: "",
+        recipe: "",
+        user_id: "",
         file: "", 
         image_url: "",
-     
       },
       loginError: false,
       globalError: false,
@@ -27,63 +26,68 @@ export default {
       isUserLoggedIn: false,
       isUploadSuccessVisible: false, 
       uploadSuccessMessage: '',
-      showSuccessPopup: false
+      showSuccessPopup: false,
+      imageUploadError: false,  // Nouveau champ pour l'erreur de photo
+      imageUploadErrorMessage: '',  // Nouveau champ pour le message d'erreur de photo
     };
   },
   methods: {
     async createRecipe() {
-  const token = localStorage.getItem("userToken");
+      const token = localStorage.getItem("userToken");
 
-  if (!token) {
-    console.error("Token non trouvé");
-    return;
-  }
+      if (!token) {
+        console.error("Token non trouvé");
+        return;
+      }
 
-  // Vérifier si tous les champs requis sont remplis
-  if (
-    !this.credentials.title.trim() ||
-    !this.credentials.description.trim() ||
-    !this.credentials.preparation_time ||
-    !this.credentials.utensils.trim() ||
-    !this.credentials.ingredients.trim() ||
-    !this.credentials.recipe.trim()
-  ) {
-    console.error("Veuillez remplir tous les champs");
-    return;
-  }
+      // Vérifier si tous les champs requis sont remplis
+      if (
+        !this.credentials.title.trim() ||
+        !this.credentials.description.trim() ||
+        !this.credentials.preparation_time ||
+        !this.credentials.utensils.trim() ||
+        !this.credentials.ingredients.trim() ||
+        !this.credentials.recipe.trim() ||
+        !this.credentials.image_url.trim()  // Vérifier si l'image URL est vide
+      ) {
+        console.error("Veuillez remplir tous les champs");
+        this.globalError = true;
+        this.globalErrorMessage = 'Veuillez remplir tous les champs, y compris télécharger une photo.';
+        return;
+      }
 
-  try {
-    const data = {
-      title: this.credentials.title,
-      description: this.credentials.description,
-      preparation_time: this.credentials.preparation_time,
-      utensils: this.credentials.utensils,
-      ingredients: this.credentials.ingredients,
-      recipe: this.credentials.recipe,
-      image_url:this.credentials.image_url
-    };
+      try {
+        const data = {
+          title: this.credentials.title,
+          description: this.credentials.description,
+          preparation_time: this.credentials.preparation_time,
+          utensils: this.credentials.utensils,
+          ingredients: this.credentials.ingredients,
+          recipe: this.credentials.recipe,
+          image_url: this.credentials.image_url,
+        };
 
-    const response = await axios({
-      method: "post",
-      url: "http://localhost:3000/recipe",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      data: data,
-    });
+        const response = await axios({
+          method: "post",
+          url: "http://localhost:3000/recipe",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          data: data,
+        });
 
-    this.showSuccessPopup = true;
-    this.$emit('recipeAdded');
-  } catch (error) {
-    console.error("Erreur lors de la soumission:", error);
-  }
-},
+        this.showSuccessPopup = true;
+        this.$emit('recipeAdded');
+      } catch (error) {
+        console.error("Erreur lors de la soumission:", error);
+      }
+    },
 
     async uploadPhotos() {
       try {
         const formData = new FormData();
-        formData.append('photo', this.credentials.file); 
+        formData.append('photo', this.credentials.file);
 
         const response = await axios.post('http://localhost:3000/image', formData, {
           headers: {
@@ -91,22 +95,22 @@ export default {
           }
         });
 
-     const image_url = response.data.imageURL; 
-    console.log('Image uploaded successfully:', image_url);
-    this.credentials.image_url = image_url;
-    // Afficher le message de confirmation
-    console.log(image_url);
-    this.uploadSuccessMessage = 'Votre photo a été ajoutée avec succès!';
-    this.isUploadSuccessVisible = true;
-  } catch (error) {
-    console.error('Error uploading image:', error);
-
-  } 
-},
+        const image_url = response.data.imageURL;
+        console.log('Image uploaded successfully:', image_url);
+        this.credentials.image_url = image_url;
+        this.uploadSuccessMessage = 'Votre photo a été ajoutée avec succès!';
+        this.isUploadSuccessVisible = true;
+        this.imageUploadError = false;  // Réinitialiser l'erreur de téléchargement d'image
+      } catch (error) {
+        console.error('Error uploading image:', error);
+        this.imageUploadError = true;
+        this.imageUploadErrorMessage = 'Erreur lors du téléchargement de l\'image. Veuillez réessayer.';
+      }
+    },
 
     handleFileChange(event) {
       this.credentials.file = event.target.files[0];
-      this.uploadPhotos(); 
+      this.uploadPhotos();
     },
 
     toggleUploadForm() {
@@ -121,13 +125,11 @@ export default {
     profileRoute() {
       const token = localStorage.getItem('userToken');
       if (token) {
-        // Si l'utilisateur est connecté, retourne '/account'
         this.isUserLoggedIn = true;
-        return '/account';  
+        return '/account';
       } else {
-        // Si l'utilisateur n'est pas connecté, retourne '/connexion'
         this.isUserLoggedIn = false;
-        return '/connexion';  
+        return '/connexion';
       }
     },
 
@@ -144,25 +146,21 @@ export default {
     hideErrorMessage() {
       this.globalError = false;
     },
+
     hideSuccessPopup() {
       this.showSuccessPopup = false;
     },
   },
   mounted() {
-    // Initialisation de l'icône "retour en haut"
     const goToTopIcon = document.getElementById("goToTop");
     if (goToTopIcon) {
       goToTopIcon.addEventListener("click", this.goToTop);
     }
 
-    // Initialisation du bouton "ajouter une photo"
     const btnAddPhoto = document.getElementById('btnAddPhoto');
     if (btnAddPhoto) {
       btnAddPhoto.addEventListener('click', this.toggleUploadForm);
     }
-
-    // Initialisation du formulaire de téléchargement de photos
-    const formUploadPhotos = document.getElementById('formUploadPhotos');
   }
 }
 </script>
@@ -172,33 +170,33 @@ export default {
 <template>
 <div class="picture">
   
- <!-- *******************Headbar avec icônes********************* -->
-
-<nav class="bg-amber-700 ml-6 mr-6 mt-5 rounded-xl border-red-950 dark:bg-gray-900">
-    <div class="max-w-screen-xl flex items-center justify-between p-2">
-      <!-- Utilisez les classes de taille d'écran pour ajuster la taille de l'image -->
-      <img src="/image/logo2.png" class="h-28 sm:h-auto lg:h-48 rounded-xl" alt="#" />
-      <span class="font-serif text-2xl lg:text-5xl">Miam Miam</span>
-      <div class="flex items-center space-x-4">
-      <!-- Bouton Home -->
-      <div class="hidden sm:block">
-        <router-link to="/home">
-          <button data-tooltip-target="tooltip-home" type="button" class="inline-flex flex-col items-center justify-center px-5 rounded-s-full dark:hover:bg-gray-800 group">
-            <svg class="w-6 h-6 text-black-700 dark:text-gray-400" aria-hidden="true" xmlns="" fill="currentColor" viewBox="0 0 20 20">
-              <path d="m19.707 9.293-2-2-7-7a1 1 0 0 0-1.414 0l-7 7-2 2a1 1 0 0 0 1.414 1.414L2 10.414V18a2 2 0 0 0 2 2h3a1 1 0 0 0 1-1v-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 0 1 1h3a2 2 0 0 0 2-2v-7.586l.293.293a1 1 0 0 0 1.414-1.414Z" />
-            </svg>
-            <span class="sr-only">Home</span>
-          </button>
-        </router-link>
-      <!-- Bouton All Recipes -->
-      <router-link to="/allrecipe">
-          <button data-tooltip-target="tooltip-recipes " type="button" class="inline-flex flex-col items-center justify-center px-5 dark:hover:bg-gray-800 group ">
-            <img class="w-6 h-6 mb-1 ml-5 mt-5 text-gray-500 dark:text-gray-400 " src="/image/cook-book.png" alt="Icône de la barre de navigation">
-            <span class="sr-only">Recipes</span>
-          </button>
-        </router-link>
-      <!-- Bouton Add Recipe -->
-      <router-link v-if="isUserLoggedIn" to="/addrecipe">
+    <!-- ****************************************************************************Headbar avec icônes********************************************************************************* -->
+    
+    <nav class="bg-amber-700 ml-6 mr-6 mt-5 rounded-xl border-red-950 dark:bg-gray-900">
+       <div class="max-w-screen-xl flex items-center justify-between p-2">
+         <!-- Utilisez les classes de taille d'écran pour ajuster la taille de l'image -->
+         <img src="/image/logo2.png" class="h-28 sm:h-auto lg:h-48 rounded-xl" alt="#" />
+         <span class="font-serif text-2xl lg:text-5xl">Miam Miam</span>
+         <div class="flex items-center space-x-4">
+         <!-- Bouton Home -->
+         <div class="hidden sm:block">
+           <router-link to="/">
+             <button data-tooltip-target="tooltip-/" type="button" class="inline-flex flex-col items-center justify-center px-5 rounded-s-full dark:hover:bg-gray-800 group">
+               <svg class="w-6 h-6 text-black-700 dark:text-gray-400" aria-hidden="true" xmlns="" fill="currentColor" viewBox="0 0 20 20">
+                 <path d="m19.707 9.293-2-2-7-7a1 1 0 0 0-1.414 0l-7 7-2 2a1 1 0 0 0 1.414 1.414L2 10.414V18a2 2 0 0 0 2 2h3a1 1 0 0 0 1-1v-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 0 1 1h3a2 2 0 0 0 2-2v-7.586l.293.293a1 1 0 0 0 1.414-1.414Z" />
+               </svg>
+               <span class="sr-only">Home</span>
+             </button>
+           </router-link>
+         <!-- Bouton All Recipes -->
+         <router-link to="/allrecipe">
+             <button data-tooltip-target="tooltip-recipes " type="button" class="inline-flex flex-col items-center justify-center px-5 dark:hover:bg-gray-800 group ">
+               <img class="w-6 h-6 mb-1 ml-5 mt-5 text-gray-500 dark:text-gray-400 " src="/image/cook-book.png" alt="Icône de la barre de navigation">
+               <span class="sr-only">Recipes</span>
+             </button>
+           </router-link>
+         <!-- Bouton Add Recipe -->
+         <router-link v-if="isUserLoggedIn" to="/addrecipe">
               <button data-tooltip-target="tooltip-cooking" type="button"
                 class="inline-flex flex-col items-center justify-center px-5 dark:hover:bg-gray-800 group">
                 <img
@@ -207,42 +205,40 @@ export default {
                 <span class="sr-only">Cooking</span>
               </button>
             </router-link>
-  <!-- Bouton Profil -->
-  <router-link :to="profileRoute()">
+       <!-- Bouton Profil -->
+       <router-link :to="profileRoute()">
               <button data-tooltip-target="tooltip-profile" type="button"
                 class="inline-flex flex-col items-center justify-center px-5 rounded-e-full dark:hover:bg-gray-800 group">
-                <svg class="w-6 h-6 mb-1 ml-2 mt-5 text-black-500 dark:text-gray-400" aria-hidden="true"
-                  xmlns="/image/profile-user.png" fill="currentColor" viewBox="0 0 20 20">
-                  <path
-                    d="M10 0a10 10 0 1 0 10 10A10.011 10.011 0 0 0 10 0Zm0 5a3 3 0 1 1 0 6 3 3 0 0 1 0-6Zm0 13a8.949 8.949 0 0 1-4.951-1.488A3.987 3.987 0 0 1 9 13h2a3.987 3.987 0 0 1 3.951 3.512A8.949 8.949 0 0 1 10 18Z" />
-                </svg>
+                 <img
+                  class="w-6 h-6 mb-1 ml-5 mt-5 text-gray-500 dark:text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-500"
+                  src="/image/profile-user.png" alt="Icône de la barre de navigation">
                 <span class="sr-only">Profile</span>
               </button>
             </router-link>
-    </div>
-    </div>
-  </div>
-</nav>
+       </div>
+       </div>
+     </div>
+   </nav>
+    
+    <!-- ********************************************************************Fin Headbar avec icônes******************************************************************************************** -->
+    
+  
+    
+    
+    
+      <!-- *******************************************************************phrase d'accroche***************************************************************************************** -->
+      <div class="flex justify-center items-center mt-10 rounded-lg border-amber-700 bg-red-950 ml-2 mr-2" aria-label="En tête">
+  <span class="text-2xl lg:text-4xl xl:text-4xl font-serif italic p-4 rounded-lg text-amber-700 text-center">
+    Cuisiner, Partager, Savourer !
+  </span>
+</div>
+    <!-- ****************************************************************** fin phrase d'accroche***************************************************************************************** -->
+    
+    
 
-<!-- *******************Fin Headbar avec icônes********************* -->
-
-<!-- Supprimer la barre de navigation existante -->
 
 
-
-  <!-- *******************phrase d'accroche********** -->
-  <div class="flex justify-center items-center mt-10 rounded-lg border-amber-700 bg-red-950 ml-2 mr-2" aria-label="En tête">
-      <span
-        class="text-2xl lg:text-4xl xl:text-4xl font-serif italic p-4 rounded-lg text-amber-700 sm:text-center">Cuisiner,Partager,Savourer
-        !</span>
-    </div>
-
-<!-- ******************* fin phrase d'accroche********** -->
-
-
-
-
-  <!-- ******************Debut Image *************** -->
+  <!-- ************************************************************************************Debut Image ******************************************************************************** -->
 
 
 
@@ -256,10 +252,14 @@ export default {
 
 
 
-  <!-- ******************Fin Image************** -->
+  <!-- **********************************************************************************Fin Image************************************************************************************** -->
 
 
-    <!-- ***********titre bienvenue************* -->
+
+
+    <!-- ***************************************************************************titre bienvenue*************************************************************************************** -->
+
+
     <hr class="block md:hidden mr-20 ml-20 h-1 mt-20 my-4 bg-amber-700  border-0 rounded dark:bg-gray-700">
 
     <div class="flex justify-center items-center mt-10 rounded-lg border-amber-700 bg-red-950 ml-2 mr-2">
@@ -267,17 +267,13 @@ export default {
 </div>
 
 <hr class="hidden md:block w-full md:w-3/4 h-1 mt-20 mx-auto my-4 bg-amber-700  border-0 rounded md:my-10 dark:bg-gray-700 md:mx-auto md:px-20 sm:w-10">
+
   
-<!-- **************fin titre Bienvenue********** -->
+<!-- *********************************************************************************fin titre Bienvenue*************************************************************************** -->
 
 
-    <!-- ********************card compte******************* -->
-   
 
-<!-- Barre horizontale visible uniquement sur les écrans mobiles -->
-
-
-    <!-- ******************* Card Recette****************** -->
+    <!-- ********************************************************************************* Card Recette***************************************************************************** -->
 
     <hr class="w-48 h-1 mx-auto my-4 mt-10 mb-10 bg-amber-700  border-0 rounded md:my-10 dark:bg-gray-700">
 
@@ -294,7 +290,7 @@ export default {
           <hr class="w-48 h-1 mx-auto my-4 bg-amber-700 border-0 rounded md:my-10 dark:bg-gray-700">
 
         <!-- Card 1: description-->
-        <<label  class="block max-w-lg p-10 ml-2 bg-white border border-red-950 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
+        <label  class="block max-w-lg p-10 ml-2 bg-white border border-red-950 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
             <h5 class="mb-2 text-2xl md:text-4xl font-bold tracking-tight text-red-950 dark:text-white">Description</h5>
             <textarea v-model="credentials.description"class="font-normal text-amber-700 dark:text-gray-400 resize-none outline-none border-b-2 border-red-950 p-5 w-full md:w-96" placeholder="Ajoutez une description ici..."></textarea>
         </label>
@@ -376,7 +372,7 @@ export default {
 
 </form>
 <!-- Bouton pour ajouter des photos -->
-<div class="relative flex justify-center items-center mt-10">
+<div class="relative flex justify-center items-center mb-20 mt-10">
 <form @submit.prevent="uploadPhotos" id="formUploadPhotos" method="post" enctype="multipart/form-data" class="hidden absolute top-0 left-0" >
   
   <input type="file" name="photo" accept="image/*" multiple @change="handleFileChange">
@@ -386,13 +382,15 @@ export default {
 
 
 
-<div class="relative flex justify-center items-center mt-10">
+<div class="relative flex justify-center items-center mb-20 ">
 <button id="btnAddPhoto" method="post" class="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-green-400 to-blue-600 group-hover:from-green-400 group-hover:to-blue-600 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-green-200 dark:focus:ring-green-800">
     <span class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
         Ajouter une photo
     </span>
 </button>
 </div>
+
+
 
 
 
@@ -409,22 +407,35 @@ export default {
         <p>Votre recette a été postée avec succès !</p>
       </div>
     </div>
+*
+    <!-- ***********************************************************************fin card recette************************************************************************************* -->
 
-    <!-- ********************fin card recette***************** -->
 
-    <div class="card w-16 h-16 mx-auto mt-5 bg-white border  rounded-full shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
-  <img id="goToTop" src="/image/fleche-vers-le-haut-chevron.png" alt="Flèche vers le haut" class="w-full h-full" />
+
+
+  <!-- *****************************************************************Icone de naviguation******************************************************************************************************* -->
+
+  <div id="goToTop" class="fixed z-50 bottom-20 right-5">
+  <div class="card w-16 h-16 bg-white border rounded-full shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
+    <img id="goToTop" src="/image/fleche-vers-le-haut-chevron.png" alt="Flèche vers le haut" class="w-full h-full" />
+  </div>
 </div>
-
-  <!-- *******************navbar************************ -->
-
+<!-- *****************************************************************Fin icone de naviguation******************************************************************************************************* -->
 
 
-  <div class="md:hidden"> <!-- Masquer la barre de navigation sur les écrans de taille moyenne et plus grands -->
+
+
+
+
+
+<!-- ************************************************************************navbar*************************************************************************************************** -->
+
+
+   <div class="md:hidden"> <!-- Masquer la barre de navigation sur les écrans de taille moyenne et plus grands -->
   <div
     class="fixed z-50 w-full h-16 max-w-lg -translate-x-1/2 bg-amber-700 border border-red-950 rounded-full bottom-4 left-1/2 dark:bg-gray-700 dark:border-gray-600">
-    <div :class="{'grid-cols-4': isUserLoggedIn, 'grid-cols-3': !isUserLoggedIn}" class="grid h-full max-w-lg grid-cols-4 gap-2 mx-auto">
-      <router-link to="/home">
+    <div :class="{'grid-cols-4': isUserLoggedIn, 'grid-cols-3 ml-16': !isUserLoggedIn}" class="grid h-full max-w-lg grid-cols-4 gap-2 mx-auto">
+      <router-link to="/">
         <button data-tooltip-target="tooltip-home" type="button"
           class="inline-flex flex-col items-center justify-center px-5 rounded-s-full  dark:hover:bg-gray-800 group">
           <svg class="w-5 h-5 mb-1 ml-5 mt-5 text-black-500 dark:text-gray-400"
@@ -435,7 +446,7 @@ export default {
           <span class="sr-only">Home</span>
         </button>
       </router-link>
-      <div id="tooltip-home" role="tooltip"
+      <div id="tooltip-/" role="tooltip"
         class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700">
         Home
         <div class="tooltip-arrow" data-popper-arrow></div>
@@ -486,21 +497,20 @@ export default {
 </div>
 
 
-
-    <!-- *******************fin navbar****************** -->
-
+    <!-- ************************************************************************fin navbar********************************************************************************************** -->
 
 
 
 
-    <!-- ******************Footer debut ***********-->
+
+    <!-- ***************************************************************************Footer debut **************************************************************************************************-->
 
 
-   
+    
     <div class="hidden md:block" aria-label="barre de naviguation sur mobile">
 <footer class="bg-white rounded-lg shadow m-4 dark:bg-gray-800">
     <div class="w-full mx-auto max-w-screen-xl p-4 md:flex md:items-center md:justify-between">
-      <span class="text-sm text-gray-500 sm:text-center dark:text-gray-400">© 2023 <a href="#" class="hover:underline">Miam Miam™</a>. All Rights Reserved.
+      <span class="text-sm text-gray-500 sm:text-center dark:text-gray-400">© 2024 <a href="#" class="hover:underline">Miam Miam™</a>. All Rights Reserved.
     </span>
     <ul class="flex flex-wrap items-center mt-3 text-sm font-medium text-gray-500 dark:text-gray-400 sm:mt-0">
         <li>
@@ -521,16 +531,17 @@ export default {
 
 </div>
 
-    <!-- *******************Footer fin*************** -->
+
+
+  <!-- ************************************************************************************Footer fin********************************************************************************* -->
+
 
 
 
 
 
 </div>
-
 </template>
-
 
 <style scoped>
 .img {
